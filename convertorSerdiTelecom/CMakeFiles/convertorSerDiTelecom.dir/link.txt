@@ -1,0 +1,1 @@
+/usr/bin/g++ -DQT_QML_DEBUG -g CMakeFiles/convertorSerDiTelecom.dir/convertorSerDiTelecom_autogen/mocs_compilation.cpp.o CMakeFiles/convertorSerDiTelecom.dir/main.cpp.o CMakeFiles/convertorSerDiTelecom.dir/procfiles.cpp.o -o convertorSerDiTelecom  /usr/lib/x86_64-linux-gnu/libQt5Core.so.5.15.8 

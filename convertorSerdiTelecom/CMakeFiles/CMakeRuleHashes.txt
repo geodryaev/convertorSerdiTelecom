@@ -1,0 +1,3 @@
+# Hashes of file build rules.
+cd36df99204292d9b9da037885d27e66 /home/user/convertorSerDiTelecom/convertorSerDiTelecom_ru_RU.ts
+a868ea0622a71881fbb7ce1cdb9feac3 CMakeFiles/convertorSerDiTelecom_autogen
