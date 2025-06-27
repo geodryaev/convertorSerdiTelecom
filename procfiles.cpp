@@ -139,7 +139,12 @@ void procFile(QString pathToInput, QString PathToOutput)
     }
     QTextStream out(&newFile);
     out << head.join(",");
+    for (const QStringList el : allString)
+    {
+        QVector<QString> row;
+        row.resize(102);
 
+    }
 
     newFile.close();
 
