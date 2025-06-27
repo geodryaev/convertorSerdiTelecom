@@ -1,8 +1,0 @@
-/home/user/build-convertorSerDiTelecom-Desktop-Debug/CMakeFiles/convertorSerDiTelecom.dir
-/home/user/build-convertorSerDiTelecom-Desktop-Debug/CMakeFiles/edit_cache.dir
-/home/user/build-convertorSerDiTelecom-Desktop-Debug/CMakeFiles/rebuild_cache.dir
-/home/user/build-convertorSerDiTelecom-Desktop-Debug/CMakeFiles/list_install_components.dir
-/home/user/build-convertorSerDiTelecom-Desktop-Debug/CMakeFiles/install.dir
-/home/user/build-convertorSerDiTelecom-Desktop-Debug/CMakeFiles/install/local.dir
-/home/user/build-convertorSerDiTelecom-Desktop-Debug/CMakeFiles/install/strip.dir
-/home/user/build-convertorSerDiTelecom-Desktop-Debug/CMakeFiles/convertorSerDiTelecom_autogen.dir
