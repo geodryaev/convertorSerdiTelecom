@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
             break;
         }
     }
-    qDebug() << "test";
+
     QSettings settings("conf.ini", QSettings::IniFormat);
     QSet<QString> inProcFiles, porcFiles;
 
@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
         qDebug() << pathToSave << " " << pathToSource << " ";
         while(true)
         {
-            QThread::sleep(2);
+            QThread::sleep(1);
             if (pathToSave == "-1" or pathToSource == "-1")
             {
                 continue;
@@ -59,24 +59,36 @@ int main(int argc, char *argv[])
                 qCritical() << "Error: Пути не рабочие";
                 continue;
             }
+
             listFile = dirSource.entryList(QStringList() << "*.cdr", QDir::Files | QDir::NoSymLinks);
-            for (int i = 0; i < listFile.size();i++)
+            for (int i = 0; i < listFile.size(); i++)
             {
-                if (!porcFiles.contains(pathToSource + "/" +listFile[i]))
-                {
                     inProcFiles.insert(pathToSource + "/" + listFile[i]);
-                }
             }
 
-            QThread::sleep(5);
+            QThread::sleep(2);
+            if(inProcFiles.size() != 0)
+            {
+                qDebug() <<"Файлы на обработку";
+            }
+            else
+            {
+                qDebug() <<"Ожидание файлов для обработки ...";
+            }
+            for (const QString &str : inProcFiles)
+            {
+               qDebug() << str << "\n";
+            }
 
             for(const QString &str : inProcFiles)
             {
                 qCritical() << "Обработка файла :" << str;
                 procFile(str,pathToSave);
+                qDebug() << QFile::remove(str);
+                porcFiles.insert(str);
             }
-
-
+            inProcFiles.clear();
+            //QFile::rename(pathToSave+"cdr_v3.temp", pathToSave+"cdr_v3.cvs");
         }
     }
 

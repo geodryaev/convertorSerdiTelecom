@@ -1,10 +1,5 @@
 #include "procfiles.h"
 
-QString nameFile(QString path)
-{
-    return path.mid(path.lastIndexOf('/'),  path.lastIndexOf('.') - path.lastIndexOf('/'))+".cdr";
-}
-
 void procFile(QString pathToInput, QString PathToOutput)
 {
     QVector<QStringList> allString;
@@ -17,7 +12,8 @@ void procFile(QString pathToInput, QString PathToOutput)
     QTextStream in(&file);
     while (!in.atEnd()) {
            QString line = in.readLine();
-           QStringList fields = line.split(';', Qt::SkipEmptyParts);
+           //qDebug() << line;
+           QStringList fields = line.split(';');
            allString.push_back(fields);
            /* Пример вывода по полям
            for (int i = 0; i < fields.size(); ++i) {
@@ -26,7 +22,8 @@ void procFile(QString pathToInput, QString PathToOutput)
            qDebug() << "-----"; // Разделитель строк
            */
        }
-    QFile newFile(PathToOutput+nameFile(pathToInput));
+    QString nameFinalFiles = PathToOutput + "/cdr_v3.csv";
+    QFile newFile(nameFinalFiles);
     QStringList head
     {
                      "telco_id",
@@ -132,13 +129,29 @@ void procFile(QString pathToInput, QString PathToOutput)
                      "ss7_opc",
                      "ss7_dpc",
                     };
+    bool isFirst = false;
 
-    if (!newFile.open(QIODevice::WriteOnly | QIODevice::Text))
+    if (!newFile.exists())
     {
-        qCritical() << "Не удалось сохранить файл: " << PathToOutput+nameFile(pathToInput) << newFile.errorString();
+        isFirst = true;
     }
+
+    if (!newFile.open(QIODevice::WriteOnly | QIODevice::Append |QIODevice::Text))
+    {
+        qCritical() << "Не удалось открыть файл: " << nameFinalFiles << newFile.errorString();
+    }
+
     QTextStream out(&newFile);
-    out << head.join(";");
+    if (isFirst)
+    {
+        out << head.join(",");
+    }
+
+
+    //qDebug() << allString[0].size();
+
+
+
     Qt::endl(out);
     for (const QStringList el : allString)
     {
@@ -149,6 +162,7 @@ void procFile(QString pathToInput, QString PathToOutput)
         row[1] = el[1];
         row[2] = el[3];
         row[4] = "10";
+        row[7] = "0";
         row[8] = "0";
         row[13] = "0";
         row[18] = el[4];
@@ -204,16 +218,21 @@ void procFile(QString pathToInput, QString PathToOutput)
         {
             row[25]="1";
         }
+
+        //30
+        /*
         if (el[6] == "sip-user" or el[6] == "trunk-SIP")
         {
             row[25]="5";
         }
-
-
+        */
+        //32
+        /*
         if(el[6] == "sip-user" or el[6] == "trunk-SIP")
         {
             row[26] = el[6];
         }
+        */
         if (el[6] == "trunk-SS7")
         {
             row[37] = el[7];
@@ -230,7 +249,7 @@ void procFile(QString pathToInput, QString PathToOutput)
             row[74] = el[12];
         }
 
-        out << row.toList().join(";");
+        out << row.toList().join(",");
         Qt::endl(out);
     }
 
