@@ -145,6 +145,7 @@ void procFile(QString pathToInput, QString PathToOutput)
     if (isFirst)
     {
         out << head.join(",");
+        Qt::endl(out);
     }
 
 
@@ -152,7 +153,7 @@ void procFile(QString pathToInput, QString PathToOutput)
 
 
 
-    Qt::endl(out);
+
     for (const QStringList el : allString)
     {
         QVector<QString> row;
@@ -165,9 +166,16 @@ void procFile(QString pathToInput, QString PathToOutput)
         row[7] = "0";
         row[8] = "0";
         row[13] = "0";
+
         row[18] = el[4];
         row[20] = el[11];
         row[22] = "0";
+        row[25] = "1";
+        row[26] = el[7];
+        row[27] = el[7];
+        row[62] = "1";
+        row[63] = el[11];
+
 
 
         if (el[6]=="sip-user" or el[6]=="trunk-SIP")
@@ -191,64 +199,76 @@ void procFile(QString pathToInput, QString PathToOutput)
             row[6]="1";
         }
 
-
+        row[14] = "6";
         if (el[18] == "rostelecom")
             row[14]="1";
         if (el[18] == "beeline")
             row[14]="2";
         if (el[18] == "megafon")
             row[14]="3";
-        if (el[18] == "trunkGroup-vpbx")
+        if (el[18] == "trunkgroup-vpbx")
             row[14]="4";
-        if (el[18] == "")
+        if (el[18] == "trunkgroup-aster")
             row[14]="5";
 
-        if (el[18] == "rostelecom")
-            row[14]="1";
+        row[9] = "6";
+        if (el[19] == "rostelecom")
+            row[9]="1";
         if (el[19] == "beeline")
-            row[14]="2";
+            row[9]="2";
         if (el[19] == "megafon")
-            row[14]="3";
-        if (el[19] == "trunkGroup-vpbx")
-            row[14]="4";
-        if (el[19] == "")
-            row[14]="5";
+            row[9]="3";
+        if (el[19] == "trunkgroup-vpbx")
+            row[9]="4";
+        if (el[19] == "trunkgroup-aster")
+            row[9]="5";
 
+
+        /*
         if (el[6] == "trunk-SS7")
         {
             row[25]="1";
         }
 
-        //30
-        /*
+
+
         if (el[6] == "sip-user" or el[6] == "trunk-SIP")
         {
             row[25]="5";
         }
+
         */
+
         //32
         /*
         if(el[6] == "sip-user" or el[6] == "trunk-SIP")
         {
-            row[26] = el[6];
+            row[26] = el[8];
         }
         */
+
+
+        /*
         if (el[6] == "trunk-SS7")
         {
             row[37] = el[7];
         }
+        */
 
 
+        /*
         if (el[10] =="sip-user" or el[10]=="trunk-SIP")
         {
             row[63] = el[9];
         }
+        */
 
+        /*
         if (el[10] =="trunk-SS7")
         {
             row[74] = el[12];
         }
-
+        */
         out << row.toList().join(",");
         Qt::endl(out);
     }
