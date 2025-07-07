@@ -31,24 +31,35 @@ int main(int argc, char *argv[])
 
     if (!QFile::exists("conf.ini"))
     {
-        qDebug() << "File is not be";
+        qDebug() << "Не нашел файл conf.ini. Создал пустой, заполни поля ввода и вывода и перезапустите приложение";
         settings.beginGroup("Path");
         settings.setValue("Folder_input", "-1");
         settings.setValue("Folder_output", "-1");
+        settings.setValue("Time_cheack.sec", "60");
         settings.endGroup();
         settings.sync();
+        return 1;
     }
     else
     {
         QString pathToSave = settings.value("Path/Folder_output").toString();
         QString pathToSource = settings.value("Path/Folder_input").toString();
+
+        QStringList listFile ;
+
+        int timeUpdate = settings.value("Path/Time_cheack.sec").toInt();
+        if (!timeUpdate)
+        {
+            qCritical() << "Ошибка чтения в conf.ini -> 'Time_cheack.sec' отсутсвует или введен не корректно";
+        }
+
         QDir dirSource(pathToSource);
         QDir dirSave(pathToSave);
-        QStringList listFile ;
+
         qDebug() << pathToSave << " " << pathToSource << " ";
         while(true)
         {
-            QThread::sleep(1);
+            QThread::sleep(timeUpdate);
             if (pathToSave == "-1" or pathToSource == "-1")
             {
                 continue;

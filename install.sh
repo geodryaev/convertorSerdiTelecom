@@ -9,7 +9,7 @@ BINARY_SCR="./$APP_NAME"
 BINARY_DST="$APP_PATH/$APP_NAME"
 SERVICE_FILE="/etc/systemd/system/$APP_NAME.service"
 
-read -p "Введите имя пользователя для запуска сервиса (default:user)!NO ROOT!\n" SERVICE_USER
+read -p "Введите имя пользователя для запуска сервиса (default:user)!NO ROOT!   :" SERVICE_USER
 
 SERVICE_USER=${SERVICE_USER:-user}
 

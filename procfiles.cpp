@@ -156,13 +156,14 @@ void procFile(QString pathToInput, QString PathToOutput)
 
     for (const QStringList el : allString)
     {
+        bool isError = false;
         QVector<QString> row;
         row.resize(102);
 
         row[0] = "0";
         row[1] = el[1];
         row[2] = el[3];
-        row[4] = "10";
+        row[4] = "0";
         row[7] = "0";
         row[8] = "0";
         row[13] = "0";
@@ -172,7 +173,7 @@ void procFile(QString pathToInput, QString PathToOutput)
         row[22] = "0";
         row[25] = "1";
         row[26] = el[7];
-        row[27] = el[7];
+        //row[27] = el[7];
         row[62] = "1";
         row[63] = el[11];
 
@@ -184,17 +185,20 @@ void procFile(QString pathToInput, QString PathToOutput)
             row[3] = "2";
 
 
-        if (el[6]=="sip-user")
+        if (el[6]=="sip-user" or el[6]=="trunk-SIP")
             row[5] = "0";
-        if (el[6]=="trunk-SS7" or el[6]=="trunk-SIP")
+        if (el[6]=="trunk-SS7" )
             row[5] = "1";
 
-
-        if (el[10]=="sip-user")
+        if(el[10] == "")
+        {
+            isError = true;
+        }
+        if (el[10]=="sip-user" or el[10] == "trunk-SIP")
         {
             row[6]="0";
         }
-        if (el[10]=="trunk-SS7" or el[10] == "trunk-SIP")
+        if (el[10]=="trunk-SS7" )
         {
             row[6]="1";
         }
@@ -269,8 +273,12 @@ void procFile(QString pathToInput, QString PathToOutput)
             row[74] = el[12];
         }
         */
-        out << row.toList().join(",");
-        Qt::endl(out);
+        if(!isError)
+        {
+            out << row.toList().join(",");
+            Qt::endl(out);
+        }
+
     }
 
     newFile.close();
