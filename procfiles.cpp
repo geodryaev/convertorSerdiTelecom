@@ -1,8 +1,39 @@
 #include "procfiles.h"
+#include "QDateTime"
+bool selfNumber(QString str)
+{
+    unsigned long number= str.toLong();
+    if ( number >= 78795131790 and number <= 78795131799)
+        return true;
+
+    if ( number >= 78795131801 and number <= 78795131899)
+        return true;
+
+    if ( number >= 78795131901 and number <= 78795131999)
+        return true;
+
+    if ( number >= 78795132001 and number <= 78795132099)
+        return true;
+
+    if ( number >= 78795132101 and number <= 78795132199)
+        return true;
+
+    if ( number >= 78795132101 and number <= 78795132199)
+        return true;
+
+    if ( number >= 78795132201 and number <= 78795132289)
+        return true;
+
+    if ( number >= 78795135501 and number <= 78795135599)
+        return true;
+
+    return false;
+}
 
 void procFile(QString pathToInput, QString PathToOutput)
 {
     QVector<QStringList> allString;
+    QDateTime curTime = QDateTime::currentDateTime();
 
     QFile file(pathToInput);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -22,7 +53,13 @@ void procFile(QString pathToInput, QString PathToOutput)
            qDebug() << "-----"; // Разделитель строк
            */
        }
-    QString nameFinalFiles = PathToOutput + "/cdr_v3.csv";
+    QString nameFinalFiles = PathToOutput + "/cdr_v3_" +
+            QString::number(curTime.date().year()) + "_" +
+            QString::number(curTime.date().month()) + "_" +
+            QString::number(curTime.date().day()) + "_" +
+            QString::number(curTime.time().hour()) + "_" +
+            QString::number(curTime.time().minute()) + "_" +
+            QString::number(curTime.time().second()) + ".csv";
     QFile newFile(nameFinalFiles);
     QStringList head
     {
@@ -185,22 +222,22 @@ void procFile(QString pathToInput, QString PathToOutput)
             row[3] = "2";
 
 
-        if (el[6]=="sip-user" or el[6]=="trunk-SIP")
+        if (selfNumber(el[7]))
+        {
             row[5] = "0";
-        if (el[6]=="trunk-SS7" )
+        }
+        else
+        {
             row[5] = "1";
+        }
 
-        if(el[10] == "")
+        if (selfNumber(el[11]))
         {
-            isError = true;
+            row[6] = "0";
         }
-        if (el[10]=="sip-user" or el[10] == "trunk-SIP")
+        else
         {
-            row[6]="0";
-        }
-        if (el[10]=="trunk-SS7" )
-        {
-            row[6]="1";
+            row[6] = "1";
         }
 
         row[14] = "6";
@@ -229,50 +266,56 @@ void procFile(QString pathToInput, QString PathToOutput)
 
 
         /*
+        if (el[6]=="sip-user" or el[6]=="trunk-SIP")
+            row[5] = "0";
+        if (el[6]=="trunk-SS7" )
+            row[5] = "1";
+
+        if(el[10] == "")
+        {
+            isError = true;
+        }
+        if (el[10]=="sip-user" or el[10] == "trunk-SIP" or el[10] == "user-serviced")
+        {
+            row[6]="0";
+        }
+        if (el[10]=="trunk-SS7" )
+        {
+            row[6]="1";
+        }
+
         if (el[6] == "trunk-SS7")
         {
             row[25]="1";
         }
-
-
 
         if (el[6] == "sip-user" or el[6] == "trunk-SIP")
         {
             row[25]="5";
         }
 
-        */
-
-        //32
-        /*
         if(el[6] == "sip-user" or el[6] == "trunk-SIP")
         {
             row[26] = el[8];
         }
-        */
 
-
-        /*
         if (el[6] == "trunk-SS7")
         {
             row[37] = el[7];
         }
-        */
 
-
-        /*
         if (el[10] =="sip-user" or el[10]=="trunk-SIP")
         {
             row[63] = el[9];
         }
-        */
 
-        /*
         if (el[10] =="trunk-SS7")
         {
             row[74] = el[12];
         }
         */
+
+
         if(!isError)
         {
             out << row.toList().join(",");
