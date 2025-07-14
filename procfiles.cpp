@@ -214,9 +214,13 @@ void procFile(QString pathToInput, QString PathToOutput)
         row[62] = "1";
         row[63] = el[11];
 
+        if (el[8] == "" or el[11] == "" or el[12] == "")
+        {
+            isError = true;
+        }
 
 
-        if (el[6]=="sip-user" or el[6]=="trunk-SIP")
+        if (el[6]=="sip-user" or el[6]=="trunk-SIP" or "user-service")
             row[3] = "1";
         if (el[6] == "trunk-SS7")
             row[3] = "2";
@@ -321,7 +325,6 @@ void procFile(QString pathToInput, QString PathToOutput)
             out << row.toList().join(",");
             Qt::endl(out);
         }
-
     }
 
     newFile.close();
